@@ -11,9 +11,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Main command handler for RandomItemChallenge
- */
 public class RandomItemChallengeCommand implements CommandExecutor, TabCompleter {
 
     private final RandomItemChallenge plugin;
@@ -51,9 +48,6 @@ public class RandomItemChallengeCommand implements CommandExecutor, TabCompleter
         return true;
     }
 
-    /**
-     * Start the challenge
-     */
     private void handleStart(CommandSender sender) {
         if (plugin.getItemManager().isRunning()) {
             sender.sendMessage(plugin.getMessage("already-running"));
@@ -63,9 +57,6 @@ public class RandomItemChallengeCommand implements CommandExecutor, TabCompleter
         plugin.getItemManager().start();
     }
 
-    /**
-     * Stop the challenge
-     */
     private void handleStop(CommandSender sender) {
         if (!plugin.getItemManager().isRunning()) {
             sender.sendMessage(plugin.getMessage("not-running"));
@@ -75,9 +66,6 @@ public class RandomItemChallengeCommand implements CommandExecutor, TabCompleter
         plugin.getItemManager().stop();
     }
 
-    /**
-     * Toggle the challenge
-     */
     private void handleToggle(CommandSender sender) {
         if (plugin.getItemManager().isRunning()) {
             plugin.getItemManager().stop();
@@ -86,9 +74,6 @@ public class RandomItemChallengeCommand implements CommandExecutor, TabCompleter
         }
     }
 
-    /**
-     * Skip to next item
-     */
     private void handleSkip(CommandSender sender) {
         if (!plugin.getItemManager().isRunning()) {
             sender.sendMessage(plugin.getMessage("not-running"));
@@ -99,9 +84,6 @@ public class RandomItemChallengeCommand implements CommandExecutor, TabCompleter
         sender.sendMessage(plugin.getMessage("skipped"));
     }
 
-    /**
-     * Set or view interval
-     */
     private void handleInterval(CommandSender sender, String[] args) {
         if (args.length < 2) {
             sender.sendMessage(plugin.getMessage("interval-current",
@@ -123,9 +105,6 @@ public class RandomItemChallengeCommand implements CommandExecutor, TabCompleter
         }
     }
 
-    /**
-     * Show status
-     */
     private void handleStatus(CommandSender sender) {
         boolean running = plugin.getItemManager().isRunning();
         int interval = plugin.getItemManager().getInterval();
@@ -138,17 +117,11 @@ public class RandomItemChallengeCommand implements CommandExecutor, TabCompleter
         sender.sendMessage(plugin.colorize("&8&m------------------------------------------"));
     }
 
-    /**
-     * Reload configuration
-     */
     private void handleReload(CommandSender sender) {
         plugin.reload();
         sender.sendMessage(plugin.getMessage("reload"));
     }
 
-    /**
-     * Send help message
-     */
     private void sendHelp(CommandSender sender) {
         sender.sendMessage(plugin.colorize("&8&m----------&r &a&lRandomItemChallenge &8&m----------"));
         sender.sendMessage(plugin.colorize("&a/ric start &8- &7Start the challenge"));

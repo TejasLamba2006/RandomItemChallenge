@@ -7,17 +7,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-/**
- * Utility class for advertising SMP Core plugin
- */
 public class PluginAdvertiser {
 
     private static final String SMP_CORE_PLUGIN = "smp-core";
     private static final String DISCORD_LINK = "https://discord.gg/7fQPG4Grwt";
 
-    /**
-     * Show advertisement message on plugin enable
-     */
     public static void showEnableMessage(JavaPlugin plugin) {
         if (Bukkit.getPluginManager().getPlugin(SMP_CORE_PLUGIN) != null) {
             return;

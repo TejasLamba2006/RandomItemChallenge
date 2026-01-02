@@ -18,26 +18,20 @@ public class RandomItemChallenge extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        // Save default config
         saveDefaultConfig();
 
-        // Initialize MiniMessage
         miniMessage = MiniMessage.miniMessage();
 
-        // Initialize managers
         itemManager = new ItemManager(this);
 
-        // Register commands
         RandomItemChallengeCommand mainCommand = new RandomItemChallengeCommand(this);
         getCommand("randomitemchallenge").setExecutor(mainCommand);
         getCommand("randomitemchallenge").setTabCompleter(mainCommand);
 
-        // Show advertisement
         if (getConfig().getBoolean("show-advertisement", true)) {
             PluginAdvertiser.showEnableMessage(this);
         }
 
-        // Auto-start if enabled
         if (getConfig().getBoolean("enabled", false)) {
             itemManager.start();
         }
@@ -47,7 +41,6 @@ public class RandomItemChallenge extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Stop the challenge
         if (itemManager != null && itemManager.isRunning()) {
             itemManager.stop(false); // Don't broadcast on shutdown
         }
@@ -55,31 +48,19 @@ public class RandomItemChallenge extends JavaPlugin {
         getLogger().info("RandomItemChallenge disabled!");
     }
 
-    /**
-     * Get plugin instance
-     */
     public static RandomItemChallenge getInstance() {
         return instance;
     }
 
-    /**
-     * Get item manager
-     */
     public ItemManager getItemManager() {
         return itemManager;
     }
 
-    /**
-     * Reload configuration
-     */
     public void reload() {
         reloadConfig();
         itemManager.reload();
     }
 
-    /**
-     * Colorize text
-     */
     public Component colorize(String text) {
         if (text == null || text.isEmpty()) {
             return Component.empty();
@@ -94,9 +75,6 @@ public class RandomItemChallenge extends JavaPlugin {
         return LegacyComponentSerializer.legacySection().deserialize(legacyText);
     }
 
-    /**
-     * Get message from config with prefix
-     */
     public Component getMessage(String key, String... replacements) {
         String prefix = getConfig().getString("messages.prefix", "&8[&a&lRIC&8] &7");
         String message = getConfig().getString("messages." + key, key);

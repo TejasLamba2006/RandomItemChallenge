@@ -14,9 +14,6 @@ import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * Manages the random item distribution
- */
 public class ItemManager {
 
     private final RandomItemChallenge plugin;
@@ -39,14 +36,10 @@ public class ItemManager {
         loadItemPool();
     }
 
-    /**
-     * Load the item pool from configuration
-     */
     private void loadItemPool() {
         itemPool.clear();
         blacklist.clear();
 
-        // Load blacklist
         List<String> blacklistNames = plugin.getConfig().getStringList("items.blacklist");
         for (String name : blacklistNames) {
             try {
@@ -56,9 +49,7 @@ public class ItemManager {
             }
         }
 
-        // Check if using custom list
         if (plugin.getConfig().getBoolean("items.use-custom-list", true)) {
-            // Load custom list
             List<String> customList = plugin.getConfig().getStringList("items.custom-list");
             for (String name : customList) {
                 try {
@@ -72,10 +63,8 @@ public class ItemManager {
             }
             plugin.getLogger().info("Loaded " + itemPool.size() + " items from custom list.");
         } else {
-            // Use all Minecraft items except blacklist
             for (Material mat : Material.values()) {
                 if (mat.isItem() && !mat.isAir() && !blacklist.contains(mat)) {
-                    // Skip some obviously problematic items
                     String name = mat.name();
                     if (name.contains("SPAWN_EGG") && !plugin.getConfig().getBoolean("items.allow-spawn-eggs", false)) {
                         continue;
@@ -90,9 +79,6 @@ public class ItemManager {
         }
     }
 
-    /**
-     * Start the random item challenge
-     */
     public void start() {
         if (running)
             return;
@@ -101,17 +87,14 @@ public class ItemManager {
         int interval = plugin.getConfig().getInt("interval", 30);
         secondsUntilNext = interval;
 
-        // Show title
         if (plugin.getConfig().getBoolean("game.show-title-on-start", true)) {
             showStartTitle(interval);
         }
 
-        // Broadcast
         if (plugin.getConfig().getBoolean("game.broadcast-toggle", true)) {
             Bukkit.broadcast(plugin.getMessage("started"));
         }
 
-        // Start countdown task
         if (plugin.getConfig().getBoolean("game.show-countdown", true)) {
             countdownTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
                 secondsUntilNext--;
@@ -119,30 +102,22 @@ public class ItemManager {
                     secondsUntilNext = plugin.getConfig().getInt("interval", 30);
                 }
 
-                // Show countdown in action bar
                 for (Player player : getEligiblePlayers()) {
                     player.sendActionBar(plugin.colorize("&7Next item in: &a" + secondsUntilNext + "s"));
                 }
             }, 20L, 20L);
         }
 
-        // Start drop task
         long intervalTicks = interval * 20L;
         dropTask = Bukkit.getScheduler().runTaskTimer(plugin, this::dropItems, intervalTicks, intervalTicks);
 
         plugin.getLogger().info("Random Item Challenge started! Interval: " + interval + " seconds");
     }
 
-    /**
-     * Stop the random item challenge
-     */
     public void stop() {
         stop(true);
     }
 
-    /**
-     * Stop with optional broadcast
-     */
     public void stop(boolean broadcast) {
         if (!running)
             return;
@@ -159,7 +134,6 @@ public class ItemManager {
             countdownTask = null;
         }
 
-        // Clear action bars
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.sendActionBar(Component.empty());
         }
@@ -171,9 +145,6 @@ public class ItemManager {
         plugin.getLogger().info("Random Item Challenge stopped.");
     }
 
-    /**
-     * Skip to next item drop immediately
-     */
     public void skip() {
         if (!running)
             return;
@@ -182,16 +153,10 @@ public class ItemManager {
         secondsUntilNext = plugin.getConfig().getInt("interval", 30);
     }
 
-    /**
-     * Check if challenge is running
-     */
     public boolean isRunning() {
         return running;
     }
 
-    /**
-     * Drop random items to all eligible players
-     */
     private void dropItems() {
         List<Player> players = getEligiblePlayers();
 
@@ -208,9 +173,6 @@ public class ItemManager {
         }
     }
 
-    /**
-     * Get list of eligible players
-     */
     private List<Player> getEligiblePlayers() {
         return Bukkit.getOnlinePlayers().stream()
                 .filter(p -> !p.hasPermission("randomitemchallenge.bypass"))
@@ -219,18 +181,13 @@ public class ItemManager {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Check if a player is eligible
-     */
     private boolean isPlayerEligible(Player player) {
-        // Check game mode
         if (plugin.getConfig().getBoolean("players.survival-only", true)) {
             if (player.getGameMode() != GameMode.SURVIVAL && player.getGameMode() != GameMode.ADVENTURE) {
                 return false;
             }
         }
 
-        // Check world whitelist
         if (plugin.getConfig().getBoolean("players.world-whitelist-enabled", false)) {
             List<String> whitelist = plugin.getConfig().getStringList("players.world-whitelist");
             if (!whitelist.contains(player.getWorld().getName())) {
@@ -241,18 +198,13 @@ public class ItemManager {
         return true;
     }
 
-    /**
-     * Generate a random item
-     */
     private ItemStack generateRandomItem() {
         if (itemPool.isEmpty()) {
             return new ItemStack(Material.DIRT); // Fallback
         }
 
-        // Pick random material
         Material material = itemPool.get(random.nextInt(itemPool.size()));
 
-        // Determine quantity
         int quantity = 1;
         if (material.getMaxStackSize() > 1) {
             if (plugin.getConfig().getBoolean("quantity.random-quantity", true)) {
@@ -266,7 +218,6 @@ public class ItemManager {
 
         ItemStack item = new ItemStack(material, quantity);
 
-        // Maybe add enchantments
         double enchantChance = plugin.getConfig().getDouble("enchantments.chance", 0.1);
         if (random.nextDouble() < enchantChance && canBeEnchanted(material)) {
             addRandomEnchantments(item);
@@ -275,11 +226,7 @@ public class ItemManager {
         return item;
     }
 
-    /**
-     * Check if material can be enchanted
-     */
     private boolean canBeEnchanted(Material material) {
-        // Check if any enchantment is applicable
         for (Enchantment ench : Enchantment.values()) {
             ItemStack test = new ItemStack(material);
             if (ench.canEnchantItem(test)) {
@@ -289,9 +236,6 @@ public class ItemManager {
         return false;
     }
 
-    /**
-     * Add random enchantments to an item
-     */
     private void addRandomEnchantments(ItemStack item) {
         List<Enchantment> applicable = new ArrayList<>();
         boolean allowTreasure = plugin.getConfig().getBoolean("enchantments.allow-treasure", false);
@@ -326,9 +270,6 @@ public class ItemManager {
         item.setItemMeta(meta);
     }
 
-    /**
-     * Give item to player
-     */
     private void giveItem(Player player, ItemStack item) {
         String deliveryMethod = plugin.getConfig().getString("delivery.method", "INVENTORY");
 
@@ -336,7 +277,6 @@ public class ItemManager {
 
         switch (deliveryMethod.toUpperCase()) {
             case "HOTBAR" -> {
-                // Try hotbar first
                 for (int i = 0; i <= 8; i++) {
                     if (player.getInventory().getItem(i) == null) {
                         player.getInventory().setItem(i, item);
@@ -345,7 +285,6 @@ public class ItemManager {
                     }
                 }
                 if (!given) {
-                    // Fall through to inventory
                     HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(item);
                     if (!leftover.isEmpty()) {
                         player.getWorld().dropItemNaturally(player.getLocation(), item);
@@ -371,7 +310,6 @@ public class ItemManager {
         if (given) {
             playEffects(player);
 
-            // Show message
             if (plugin.getConfig().getBoolean("delivery.show-message", true)) {
                 String itemName = formatItemName(item.getType());
                 Component message = plugin.colorize("&aYou received: &f" + itemName + " x" + item.getAmount());
@@ -387,12 +325,8 @@ public class ItemManager {
         }
     }
 
-    /**
-     * Format item name nicely
-     */
     private String formatItemName(Material material) {
         String name = material.name().replace('_', ' ').toLowerCase();
-        // Capitalize first letter of each word
         String[] words = name.split(" ");
         StringBuilder result = new StringBuilder();
         for (String word : words) {
@@ -403,11 +337,7 @@ public class ItemManager {
         return result.toString();
     }
 
-    /**
-     * Play delivery effects
-     */
     private void playEffects(Player player) {
-        // Sound
         if (plugin.getConfig().getBoolean("delivery.sound.enabled", true)) {
             String soundName = plugin.getConfig().getString("delivery.sound.type", "ENTITY_ITEM_PICKUP");
             float volume = (float) plugin.getConfig().getDouble("delivery.sound.volume", 1.0);
@@ -421,7 +351,6 @@ public class ItemManager {
             }
         }
 
-        // Particles
         if (plugin.getConfig().getBoolean("delivery.particles.enabled", true)) {
             String particleType = plugin.getConfig().getString("delivery.particles.type", "HAPPY_VILLAGER");
             int count = plugin.getConfig().getInt("delivery.particles.count", 10);
@@ -436,9 +365,6 @@ public class ItemManager {
         }
     }
 
-    /**
-     * Show start title to all players
-     */
     private void showStartTitle(int interval) {
         String mainTitle = plugin.getConfig().getString("game.title.main", "&a&lRANDOM ITEMS!");
         String subTitle = plugin.getConfig().getString("game.title.sub", "&7A new item every {interval} seconds!")
@@ -460,30 +386,20 @@ public class ItemManager {
         }
     }
 
-    /**
-     * Set interval
-     */
     public void setInterval(int seconds) {
         plugin.getConfig().set("interval", seconds);
         plugin.saveConfig();
 
-        // Restart if running
         if (running) {
             stop(false);
             start();
         }
     }
 
-    /**
-     * Get current interval
-     */
     public int getInterval() {
         return plugin.getConfig().getInt("interval", 30);
     }
 
-    /**
-     * Reload manager
-     */
     public void reload() {
         boolean wasRunning = running;
 
