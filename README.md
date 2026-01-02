@@ -32,19 +32,23 @@ Every X seconds, everyone online gets a random item. Could be a diamond. Could b
 ## Configuration
 
 **Item Selection**
+
 - Use the built-in curated list (balanced selection of useful and interesting items)
 - Or enable all items with a blacklist for things like command blocks
 
 **Quantities**
+
 - Fixed amount per drop
 - Or random range (1-16 etc)
 
 **Enchantments**
+
 - Chance for items to come enchanted
 - Max enchantment level cap
 - Treasure enchantments toggle
 
 **Delivery**
+
 - INVENTORY - Goes in first empty slot
 - HOTBAR - Prioritizes hotbar slots
 - DROP - Drops at player's feet
@@ -59,7 +63,7 @@ Every X seconds, everyone online gets a random item. Could be a diamond. Could b
 
 ## Support
 
-Discord: https://discord.gg/7fQPG4Grwt
+Discord: <https://discord.gg/7fQPG4Grwt>
 
 ## Requirements
 

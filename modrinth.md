@@ -35,6 +35,6 @@ Don't like the current pace? `/ric interval 60` makes it once per minute. `/ric 
 
 ## Support
 
-https://discord.gg/7fQPG4Grwt
+<https://discord.gg/7fQPG4Grwt>
 
 Works with Minecraft 1.21+ on Paper or Spigot.

@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2025-01-XX
 
 ### Added
+
 - Initial release of RandomItemChallenge
 - Periodic random item distribution to all players
 - Custom item list with 80+ curated items including Minecraft 1.21 items
