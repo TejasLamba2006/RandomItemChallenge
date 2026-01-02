@@ -1,74 +1,40 @@
 # RandomItemChallenge
 
-Ever wished your Minecraft experience had a bit more... chaos? RandomItemChallenge is here to deliver! 🎁
+Every 30 seconds (or whatever you set), everyone gets a random item. Simple as that.
 
-## What Does It Do?
+## What to expect
 
-This plugin periodically gives **every player on your server random items**. Maybe you'll get a diamond sword. Maybe you'll get a potato. Maybe you'll get the brand new **Mace** from 1.21! It's all part of the fun.
+The item pool is random. Sometimes you get something useful like a diamond pickaxe. Sometimes you get 3 dirt. Occasionally you might get the new Mace or a Totem of Undying. Part of the fun is not knowing.
 
-## Perfect For
+## Two ways to run it
 
-🎮 **Challenge Runs** - Can you beat the game with only random items?
+**Curated list** - The plugin comes with 80+ hand-picked items. Good balance of useful stuff, weapons, armor, food, blocks, and 1.21 items. No game-breaking things like command blocks.
 
-⚔️ **Survival Events** - Host special survival nights where everyone gets surprise gear!
+**All items mode** - Uses every item in Minecraft. You set up a blacklist for things you don't want appearing.
 
-🎉 **Community Fun** - Add some excitement and unpredictability to your server!
+## Use it for
 
-🎲 **Content Creation** - Great for YouTube videos and streaming!
+- Survival challenges (can you beat the game with only random items?)
+- Fun events on your server
+- Content creation
+- Just adding some chaos to normal gameplay
 
-## Features at a Glance
+## How to start
 
-✨ **Periodic Item Drops** - Every X seconds, players receive random items
+Drop in the plugin, restart, run `/ric start`. Items will start appearing. Default is every 30 seconds but you can change that.
 
-📦 **80+ Curated Items** - Or use ALL Minecraft items if you're feeling adventurous
+Don't like the current pace? `/ric interval 60` makes it once per minute. `/ric skip` forces the next item immediately.
 
-🚫 **Blacklist System** - Don't want Command Blocks appearing? Block them!
+## Config stuff
 
-✨ **Enchantment Support** - Some items come pre-enchanted
-
-🎯 **Flexible Delivery** - Items go to inventory, hotbar, or drop at your feet
-
-🔊 **Fun Effects** - Sounds and particles when you receive items
-
-🌍 **World Support** - Restrict to specific worlds if needed
-
-## Quick Start
-
-1. Drop the plugin in your `plugins` folder
-2. Restart your server
-3. Type `/ric start`
-4. Enjoy the chaos!
-
-## Commands
-
-- `/ric start` - Begin the random item challenge
-- `/ric stop` - End the madness
-- `/ric skip` - Can't wait? Get your next item now!
-- `/ric interval 30` - Change how often items drop
-
-## 1.21 Ready!
-
-This plugin is fully updated for Minecraft 1.21 and includes exciting new items:
-
-- ⚔️ **Mace** - The powerful new weapon
-- 💨 **Wind Charge** - Breeze projectiles
-- 🌀 **Breeze Rod** - From Trial Chambers
-- ⚙️ **Heavy Core** - Rare crafting material
-- 🪴 **All the new cherry and bamboo items**
-- And much more!
-
-## Configuration
-
-Everything is customizable! Set your own item list, adjust drop frequency, enable enchantments, and more. Check the config file after first launch.
+- Which items can appear
+- How often items drop
+- How many at a time
+- Whether they can be enchanted
+- Where they go (inventory, hotbar, or dropped on ground)
 
 ## Support
 
-Need help? Found a bug? Have a suggestion?
+https://discord.gg/7fQPG4Grwt
 
-👉 **Join our Discord**: https://discord.gg/7fQPG4Grwt
-
-We'd love to hear from you!
-
----
-
-*Ready to embrace the chaos? Install RandomItemChallenge today!*
+Works with Minecraft 1.21+ on Paper or Spigot.
